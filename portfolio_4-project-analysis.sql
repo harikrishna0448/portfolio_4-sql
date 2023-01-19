@@ -8,7 +8,8 @@ Source Link: https://files.chandoo.org/sql/awesome-chocolates-data.sql
 
 -- Calculating a new column from existing columns
 -- Giving the new column a name
-SELECT SaleDate, Amount, Boxes, Amount / Boxes AS 'Amount per box' FROM sales;
+SELECT SaleDate, Amount, Boxes, Amount / Boxes AS 'Amount per box'
+	FROM sales;
 
 
 
@@ -24,7 +25,7 @@ SELECT * FROM Sales
 -- Sorting by multiple criteria (first by Product ID, then by Amount)
 SELECT * FROM Sales
 	WHERE GeoID = 'G1'
-    ORDER BY PID, Amount DESC;
+	ORDER BY PID, Amount DESC;
 
 
 
@@ -39,7 +40,7 @@ SELECT SaleDate, GeoID, PID, Amount FROM Sales
 -- Filtering for sales where boxes are BETWEEN 0 AND 50
 SELECT * FROM Sales
 	WHERE Boxes BETWEEN 0 AND 50
-    ORDER BY Boxes DESC;
+	ORDER BY Boxes DESC;
 
 
 
@@ -90,14 +91,14 @@ SELECT * FROM People
 -- The common column between both tables is the salesperson ID (SPID).
 SELECT Sales.SaleDate, Sales.Amount, People.Salesperson, Sales.SPID
 	FROM Sales
-    JOIN People ON People.SPID = Sales.SPID;
+	JOIN People ON People.SPID = Sales.SPID;
 
 
 
 -- Analyzing sales of products by joining Sales and Products tables
 SELECT Sales.SaleDate, Sales.Amount, Sales.PID, Products.Product
 	FROM Sales
-    LEFT JOIN Products ON Products.PID = Sales.PID;
+	LEFT JOIN Products ON Products.PID = Sales.PID;
 /*
 We are using LEFT JOIN, so that if there is a product name and product ID in the
 sales table, but it does not have a matching product name and product ID in the
@@ -110,7 +111,7 @@ blank or null, because there is no matching value there.
 -- Joining multiple tables - sales, people and products
 SELECT Sales.SaleDate, Sales.Amount, Products.Product, People.Salesperson, People.Team
 	FROM Sales
-    JOIN People ON People.SPID = Sales.SPID
+	JOIN People ON People.SPID = Sales.SPID
 	JOIN Products ON Products.PID = Sales.PID;
 
 
@@ -118,7 +119,7 @@ SELECT Sales.SaleDate, Sales.Amount, Products.Product, People.Salesperson, Peopl
 -- Filtering multiple jointed table for Delish team's sales where amount less than 500
 SELECT Sales.SaleDate, Sales.Amount, Products.Product, People.Salesperson, People.Team
 	FROM Sales
-    JOIN People ON People.SPID = Sales.SPID
+	JOIN People ON People.SPID = Sales.SPID
 	JOIN Products ON Products.PID = Sales.PID
 	WHERE People.Team = 'Delish' AND Sales.Amount < 500;
 
@@ -127,7 +128,7 @@ SELECT Sales.SaleDate, Sales.Amount, Products.Product, People.Salesperson, Peopl
 -- Filtering multiple joined table for salespersons without teams, sales less than 500
 SELECT Sales.SaleDate, Sales.Amount, Products.Product, People.Salesperson, People.Team
 	FROM Sales
-    JOIN People ON People.SPID = Sales.SPID
+	JOIN People ON People.SPID = Sales.SPID
 	JOIN Products ON Products.PID = Sales.PID
 	WHERE People.Team = '' AND Sales.Amount < 500;
 /*
@@ -142,12 +143,12 @@ the field. In this database, they are blank, but not NULL. So we just use quote 
 -- Filtering above query for teamless sales, less than 500, shipped to NZ or India
 SELECT Sales.SaleDate, Sales.Amount, Products.Product, People.Salesperson, People.Team
 	FROM Sales
-    JOIN People ON People.SPID = Sales.SPID
+	JOIN People ON People.SPID = Sales.SPID
 	JOIN Products ON Products.PID = Sales.PID
-    JOIN Geo ON Geo.GeoID = Sales.GeoID
+	JOIN Geo ON Geo.GeoID = Sales.GeoID
 	WHERE People.Team = '' AND Sales.Amount < 500
-    AND Geo.Geo IN ('New Zealand','India')
-    ORDER BY SaleDate;
+	AND Geo.Geo IN ('New Zealand','India')
+	ORDER BY SaleDate;
 /*
 Note that there is no 'Geo' column in the results. This is because, though we have
 joined the Geo table and included a filter for the Geo.Geo column, we have not
@@ -160,7 +161,7 @@ the filter, but not display the Geo.Geo column in the final results.
 -- GROUP BY function to aggregate Sales Amounts by geographic region
 SELECT GeoID, sum(Amount), avg(Amount), sum(Boxes)
 	FROM Sales
-    GROUP BY GeoID;
+	GROUP BY GeoID;
 
 
 
@@ -168,8 +169,8 @@ SELECT GeoID, sum(Amount), avg(Amount), sum(Boxes)
 -- Useful to get quick summary-level data of business divisions
 SELECT Geo.Geo, sum(Amount), avg(Amount), sum(Boxes)
 	FROM Sales
-    JOIN Geo ON Geo.GeoID = Sales.GeoID
-    GROUP BY Geo.Geo;
+	JOIN Geo ON Geo.GeoID = Sales.GeoID
+	GROUP BY Geo.Geo;
 /* GeoID is replaced by Geo.Geo in order to get the name of the geographic region.
 This would be much clearer and more user-friendly for reporting than G1, G3 etc. */
 
@@ -178,9 +179,9 @@ This would be much clearer and more user-friendly for reporting than G1, G3 etc.
 -- Grouping and sorting multiple joined tables for sales by team per product category
 SELECT Products.Category, People.Team, sum(Boxes), sum(Amount)
 	FROM Sales
-    JOIN People ON People.SPID = Sales.SPID
-    JOIN Products ON Products.PID = Sales.PID
-    GROUP BY Products.Category, People.Team
+	JOIN People ON People.SPID = Sales.SPID
+	JOIN Products ON Products.PID = Sales.PID
+	GROUP BY Products.Category, People.Team
 	ORDER BY Products.Category, People.Team;
 /* NOTE:
 After the JOINs, before GROUP BY, we can add the following line:
@@ -195,9 +196,9 @@ in order to exclude teamless sales and just focus on the three teams' performanc
 SELECT Products.Product, sum(Sales.Amount) AS 'Total Sales Amount'
 	FROM Sales
 	JOIN Products ON Products.PID = Sales.PID
-    GROUP BY Products.Product
-    ORDER BY `Total Sales Amount` DESC
-    LIMIT 10;
+	GROUP BY Products.Product
+	ORDER BY `Total Sales Amount` DESC
+	LIMIT 10;
 
 
 /*  END  */
