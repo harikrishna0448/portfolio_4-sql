@@ -1,6 +1,6 @@
-# Portfolio Project 3 - SQL - COVID-19 Data
+# Portfolio Project 4 - SQL - Awesome Chocolates Sales Dataset
 
-Welcome to my third portfolio project. In this data cleaning and analysis project, I query and analyse a COVID-19 dataset with a variety of SQL queries and functions.
+Welcome to my fourth portfolio project. In this data analysis practice project, I query and analyse a sales dataset of "Awesome Chocolates", a dataset from Chandoo.org containing data on sales, salespeople, products and geographies (countries / regions).
 
 **Project Guide**
 
